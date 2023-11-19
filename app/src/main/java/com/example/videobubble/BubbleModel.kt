@@ -1,3 +1,3 @@
 package com.example.videobubble
 
-class BubbleModel(val imageRes: Int)
+class BubbleModel(val videoUrl: String)

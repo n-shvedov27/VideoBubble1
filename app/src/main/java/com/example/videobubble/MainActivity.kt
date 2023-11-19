@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 class MainActivity : AppCompatActivity() {
 
     private val items = mutableListOf<BubbleModel>().apply {
-        repeat(10) {
-            add(BubbleModel(R.drawable.ic_grade))
+        repeat(30) {
+            add(BubbleModel("https://shorturl.at/uCVWX"))
         }
     }
 
