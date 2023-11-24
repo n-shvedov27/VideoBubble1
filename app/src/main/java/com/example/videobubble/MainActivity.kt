@@ -8,7 +8,7 @@ class MainActivity : AppCompatActivity() {
 
     private val items = mutableListOf<BubbleModel>().apply {
         repeat(30) {
-            add(BubbleModel("https://shorturl.at/uCVWX"))
+            add(BubbleModel("https://i.imgur.com/3Y8IRmz.mp4"))
         }
     }
 
