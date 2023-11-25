@@ -1,8 +1,11 @@
 package com.example.videobubble
 
+import android.animation.ValueAnimator
 import android.view.View
 import android.widget.ImageView
+import androidx.core.view.animation.PathInterpolatorCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -28,6 +31,8 @@ class BubbleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), Coro
         repeatMode = ExoPlayer.REPEAT_MODE_ONE
         addListener(listener)
     }
+    
+    var isActive = false
 
     override val coroutineContext: CoroutineContext
         get() = Job() + Dispatchers.Main
@@ -51,6 +56,45 @@ class BubbleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), Coro
     
     fun onFinishLoadVideo() {
         thumbnail.isVisible = false
+    }
+    
+    fun makeInactiveAnimated() {
+        isActive = false
+        val initialSize = itemView.context.resources.getDimensionPixelSize(R.dimen.bubble_initial_size)
+        ValueAnimator.ofInt(playerView.height, initialSize).apply {
+            duration = 500L
+            interpolator = PathInterpolatorCompat.create(0.33F, 0F, 0F, 1F)
+            addUpdateListener {
+                playerView.updateLayoutParams {
+                    height = it.animatedValue as Int
+                    width = it.animatedValue as Int
+                }
+            }
+        }.start()
+    }
+
+    fun makeInactiveImmediately() {
+        isActive = false
+        val initialSize = itemView.context.resources.getDimensionPixelSize(R.dimen.bubble_initial_size)
+        playerView.updateLayoutParams {
+            height = initialSize
+            width = initialSize
+        }
+    }
+    
+    fun makeActive() {
+        isActive = true
+        val expandedSize = itemView.context.resources.getDimensionPixelSize(R.dimen.bubble_expanded_size)
+        ValueAnimator.ofInt(playerView.height, expandedSize).apply {
+            duration = 500L
+            interpolator = PathInterpolatorCompat.create(0.33F, 0F, 0F, 1F)
+            addUpdateListener {
+                playerView.updateLayoutParams {
+                    height = it.animatedValue as Int
+                    width = it.animatedValue as Int
+                }
+            }
+        }.start()
     }
     
     private fun onStartLoadVideo(videoUrl: String) {
